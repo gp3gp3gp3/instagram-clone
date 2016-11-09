@@ -2,7 +2,9 @@
   "name": "instagram-clone",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://gp3gp3gp3.github.io/instagram-clone",
   "devDependencies": {
+    "gh-pages": "^0.11.0",
     "react-scripts": "0.7.0"
   },
   "dependencies": {
@@ -13,6 +15,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "deploy": "npm run build&&gh-pages -d build",
     "eject": "react-scripts eject"
   }
 }
