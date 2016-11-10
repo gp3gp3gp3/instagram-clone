@@ -61,10 +61,14 @@ class App extends Component {
       authenticated,
       response
     } = this.state
+    const redirect_uri = process.env.NODE_ENV === 'development'
+      ? 'http://localhost:3001'
+      : 'https://gp3gp3gp3.github.io/instagram-clone'
+
     if (!authenticated) {
       return (
         <a
-          href='https://api.instagram.com/oauth/authorize/?client_id=f98db0ad5d2648f095525ea0986f4d1a&redirect_uri=http://localhost:3001&response_type=code'
+          href={`https://api.instagram.com/oauth/authorize/?client_id=f98db0ad5d2648f095525ea0986f4d1a&redirect_uri=${redirect_uri}&response_type=code`}
         >Login to Instagram</a>
       )
     } else {
