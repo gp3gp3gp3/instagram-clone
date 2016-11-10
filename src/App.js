@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import logo from './logo.svg'
 import axios from 'axios'
+import jsonp from 'jsonp'
 import './App.css'
 import { clearUrlParams, SERVER_URL, REDIRECT_URI } from './utils'
 import User from './User'
@@ -10,45 +11,64 @@ class App extends Component {
     super()
     this.state = {
       authenticated: false,
-      response: {}
+      user: {}
     }
-    this.renderUser = this.renderUser.bind(this)
-    this.onSignOut = this.onSignOut.bind(this)
   }
 
   componentWillMount () {
     const url = window.location.search
     const parsedUrl = new URLSearchParams(url)
+
     if (parsedUrl.has('code')) {
       const code = parsedUrl.get('code')
-
-      axios.get(`${SERVER_URL}?code=${code}`)
-      .then(res => {
-        if (res.data.code === 400) {
-          console.log('Instagram api call error', res.data)
-          this.setState({error: res.data})
-          clearUrlParams()
-        } else {
-          localStorage.setItem('token', res.data.access_token)
-          this.setState({
-            response: res.data.user,
-            authenticated: true
-          })
-          clearUrlParams()
-        }
-      })
-      .catch(error => {
-        console.log("Sinatra server error", error)
-        this.setState({error})
-        clearUrlParams()
-      })
+      this.fetchToken(code)
     }
+
+    if (localStorage.hasOwnProperty('token')) {
+      this.fetchUser()
+    }
+  }
+
+  fetchToken (code) {
+    axios.get(`${SERVER_URL}?code=${code}`)
+    .then(res => {
+      if (res.data.code === 400) {
+        console.log('Instagram api call error', res.data)
+        this.setState({error: res.data})
+        clearUrlParams()
+      } else {
+        localStorage.setItem('token', res.data.access_token)
+        this.setState({
+          user: res.data.user,
+          authenticated: true
+        })
+        clearUrlParams()
+      }
+    })
+    .catch(error => {
+      console.log("Sinatra server error", error)
+      this.setState({error})
+      clearUrlParams()
+    })
+  }
+
+  fetchUser () {
+    jsonp(`https://api.instagram.com/v1/users/self/?access_token=${localStorage.getItem('token')}`, null, (err, res) => {
+      if (err) {
+        console.error(err.message)
+      } else {
+        this.setState({
+          user: res.data,
+          authenticated: true
+        })
+      }
+    })
   }
 
   onSignOut () {
     localStorage.removeItem('token')
     this.setState({
-      response: {},
+      user: {},
       authenticated: false
     })
   }
@@ -56,7 +76,7 @@ class App extends Component {
   renderUser () {
     const {
       authenticated,
-      response
+      user
     } = this.state
 
     if (!authenticated) {
@@ -68,8 +88,8 @@ class App extends Component {
     } else {
       return (
         <div>
-          <User {...response} />
-          <button onClick={this.onSignOut}>Sign Out</button>
+          <User {...user} />
+          <button onClick={this.onSignOut.bind(this)}>Sign Out</button>
         </div>
       )
     }
