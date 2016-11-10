@@ -47,7 +47,7 @@ class User extends Component {
 
     return (
       <div>
-        <img src={profile_picture} alt="Profile" />
+        <img src={profile_picture} alt='Profile' />
         <h1>{full_name}</h1>
         <h2>{username}</h2>
         <h3>{website}</h3>

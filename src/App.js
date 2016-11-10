@@ -46,7 +46,7 @@ class App extends Component {
       }
     })
     .catch(error => {
-      console.log("Sinatra server error", error)
+      console.log('Sinatra server error', error)
       this.setState({error})
       clearUrlParams()
     })
@@ -95,19 +95,19 @@ class App extends Component {
     }
   }
 
-  render() {
+  render () {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+      <div className='App'>
+        <div className='App-header'>
+          <img src={logo} className='App-logo' alt='logo' />
           <h2>Instagram clone</h2>
         </div>
-        <div className="App-intro">
+        <div className='App-intro'>
           {this.renderUser()}
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
