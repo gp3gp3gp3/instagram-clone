@@ -21,6 +21,7 @@ class App extends Component {
       response: {}
     }
     this.renderUser = this.renderUser.bind(this)
+    this.onSignOut = this.onSignOut.bind(this)
   }
 
   componentWillMount () {
@@ -55,8 +56,15 @@ class App extends Component {
     }
   }
 
+  onSignOut () {
+    localStorage.removeItem('token')
+    this.setState({
+      response: {},
+      authenticated: false
+    })
+  }
+
   renderUser () {
-    /* Set localhost:3001 to https://gp3gp3gp3.github.io/instagram-clone */
     const {
       authenticated,
       response
@@ -72,7 +80,12 @@ class App extends Component {
         >Login to Instagram</a>
       )
     } else {
-      return <User {...response} />
+      return (
+        <div>
+          <User {...response} />
+          <button onClick={this.onSignOut}>Sign Out</button>
+        </div>
+      )
     }
   }
 
