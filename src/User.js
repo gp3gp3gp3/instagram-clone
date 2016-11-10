@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import FeedItem from './FeedItem'
 import jsonp from 'jsonp'
+import './User.css'
 
 class User extends Component {
   constructor () {
@@ -48,7 +49,7 @@ class User extends Component {
 
     return (
       <div>
-        <img src={profile_picture} alt='Profile' />
+        <img className='profilePicture' src={profile_picture} alt='Profile' />
         <h1>{full_name}</h1>
         <h2>{username}</h2>
         <h3>{website}</h3>
