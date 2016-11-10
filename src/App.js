@@ -109,6 +109,8 @@ class App extends Component {
           <h2>Instagram clone</h2>
         </div>
         <div className='App-intro'>
+          <h2>Source code for front end is located <a href='https://github.com/gp3gp3gp3/instagram-clone'>here</a>.</h2>
+          <h2>Source code for back end is located <a href='https://github.com/gp3gp3gp3/Sinatra-Oauth-backend'>here</a>.</h2>
           {this.renderUser()}
         </div>
       </div>
