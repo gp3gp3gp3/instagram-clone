@@ -42,6 +42,7 @@ class User extends Component {
       full_name,
       profile_picture,
       username,
+      onSignOut,
       website
     } = this.props
 
@@ -52,6 +53,7 @@ class User extends Component {
         <h2>{username}</h2>
         <h3>{website}</h3>
         <p>{bio}</p>
+        <button onClick={onSignOut}>Sign Out</button>
         {this.renderFeed()}
       </div>
     )

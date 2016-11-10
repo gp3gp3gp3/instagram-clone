@@ -80,6 +80,13 @@ class App extends Component {
     } = this.state
 
     if (!authenticated) {
+      const url = window.location.search
+      const parsedUrl = new URLSearchParams(url)
+
+      if (parsedUrl.has('code')) {
+        return <div>Loading...</div>
+      }
+
       return (
         <a
           href={`https://api.instagram.com/oauth/authorize/?client_id=f98db0ad5d2648f095525ea0986f4d1a&redirect_uri=${REDIRECT_URI}&response_type=code`}
@@ -88,8 +95,7 @@ class App extends Component {
     } else {
       return (
         <div>
-          <User {...user} />
-          <button onClick={this.onSignOut.bind(this)}>Sign Out</button>
+          <User onSignOut={this.onSignOut.bind(this)} {...user} />
         </div>
       )
     }
