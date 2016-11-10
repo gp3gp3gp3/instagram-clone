@@ -13,4 +13,4 @@ export const SERVER_URL = process.env.NODE_ENV === 'development'
 
 export const REDIRECT_URI = process.env.NODE_ENV === 'development'
       ? 'http://localhost:3001'
-      : 'https://gp3gp3gp3.github.io/instagram-clone'
+      : 'https://gp3gp3gp3.github.io/instagram-clone/'
