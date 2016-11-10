@@ -6,7 +6,7 @@ export default (props) => {
   return (
     <div>
       <a href={link}>
-        <img src={imgUrl} alt="feed item" />
+        <img src={imgUrl} alt='feed item' />
       </a>
     </div>
   )

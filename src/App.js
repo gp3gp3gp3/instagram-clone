@@ -33,7 +33,7 @@ class App extends Component {
     axios.get(`${SERVER_URL}?code=${code}`)
     .then(res => {
       if (res.data.code === 400) {
-        console.log('Instagram api call error', res.data)
+        console.error('Instagram api call error', res.data)
         this.setState({error: res.data})
         clearUrlParams()
       } else {
@@ -46,7 +46,7 @@ class App extends Component {
       }
     })
     .catch(error => {
-      console.log("Sinatra server error", error)
+      console.error('Sinatra server error', error)
       this.setState({error})
       clearUrlParams()
     })
@@ -80,6 +80,13 @@ class App extends Component {
     } = this.state
 
     if (!authenticated) {
+      const url = window.location.search
+      const parsedUrl = new URLSearchParams(url)
+
+      if (parsedUrl.has('code')) {
+        return <div>Loading...</div>
+      }
+
       return (
         <a
           href={`https://api.instagram.com/oauth/authorize/?client_id=f98db0ad5d2648f095525ea0986f4d1a&redirect_uri=${REDIRECT_URI}&response_type=code`}
@@ -88,26 +95,27 @@ class App extends Component {
     } else {
       return (
         <div>
-          <User {...user} />
-          <button onClick={this.onSignOut.bind(this)}>Sign Out</button>
+          <User onSignOut={this.onSignOut.bind(this)} {...user} />
         </div>
       )
     }
   }
 
-  render() {
+  render () {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+      <div className='App'>
+        <div className='App-header'>
+          <img src={logo} className='App-logo' alt='logo' />
           <h2>Instagram clone</h2>
         </div>
-        <div className="App-intro">
+        <div className='App-intro'>
+          <h2>Source code for front end is located <a href='https://github.com/gp3gp3gp3/instagram-clone'>here</a>.</h2>
+          <h2>Source code for back end is located <a href='https://github.com/gp3gp3gp3/Sinatra-Oauth-backend'>here</a>.</h2>
           {this.renderUser()}
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
