@@ -1,7 +1,17 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react'
+import logo from './logo.svg'
 import axios from 'axios'
-import './App.css';
+import './App.css'
+import User from './User'
+
+const clearUrlParams = () => {
+  const query = window.location.search.substring(1)
+  if (query.length) {
+    if (window.history !== undefined && window.history.pushState !== undefined) {
+      window.history.pushState({}, document.title, window.location.pathname)
+    }
+  }
+}
 
 class App extends Component {
   constructor () {
@@ -25,19 +35,22 @@ class App extends Component {
       axios.get(`${ROOT_URL}?code=${code}`)
       .then(res => {
         if (res.data.code === 400) {
+          console.log('Instagram api call error', res.data)
           this.setState({error: res.data})
+          clearUrlParams()
         } else {
           localStorage.setItem('token', res.data.access_token)
           this.setState({
             response: res.data.user,
             authenticated: true
           })
-
+          clearUrlParams()
         }
       })
       .catch(error => {
         console.log("Sinatra server error", error)
         this.setState({error})
+        clearUrlParams()
       })
     }
   }
@@ -49,12 +62,13 @@ class App extends Component {
       response
     } = this.state
     if (!authenticated) {
-      return <a href='https://api.instagram.com/oauth/authorize/?client_id=f98db0ad5d2648f095525ea0986f4d1a&redirect_uri=http://localhost:3001&response_type=code'>Login to Instagram</a>
-    } else {
-      console.log(response)
       return (
-        <div>content</div>
+        <a
+          href='https://api.instagram.com/oauth/authorize/?client_id=f98db0ad5d2648f095525ea0986f4d1a&redirect_uri=http://localhost:3001&response_type=code'
+        >Login to Instagram</a>
       )
+    } else {
+      return <User {...response} />
     }
   }
 
