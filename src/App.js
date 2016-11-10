@@ -33,7 +33,7 @@ class App extends Component {
     axios.get(`${SERVER_URL}?code=${code}`)
     .then(res => {
       if (res.data.code === 400) {
-        console.log('Instagram api call error', res.data)
+        console.error('Instagram api call error', res.data)
         this.setState({error: res.data})
         clearUrlParams()
       } else {
@@ -46,7 +46,7 @@ class App extends Component {
       }
     })
     .catch(error => {
-      console.log('Sinatra server error', error)
+      console.error('Sinatra server error', error)
       this.setState({error})
       clearUrlParams()
     })
