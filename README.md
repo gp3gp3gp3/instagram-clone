@@ -1,1 +1,1 @@
-Coding challenge for instagram authentication.
+Instagram Clone showcasing authentication using the instagram API.
